@@ -1,8 +1,18 @@
 body {
-    margin: 0;
+    margin: 10px;
+    overflow: hidden;
+}
+
+*:not(canvas) {
+    margin-right: 5px;
 }
 
 canvas {
     width: 100%!important;
-    height: 100%!important;
+    height: 92.5%!important;
+}
+
+input {
+    width: 50%!important;
+    height: 10%!important;
 }
