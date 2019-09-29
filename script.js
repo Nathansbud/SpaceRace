@@ -14,13 +14,16 @@ var paused = false
 const filledHeart = "❤️";
 const emptyHeart = "🖤";
 
-var counter = 10;
+var start = new Date()
+var remaining = 0
+
+
 var spawnPiece = function() {
-    //do something to timerRate
+    start = new Date()
     pieces.push(new GamePiece(words[Math.floor(Math.random()*words.length)]))
-    setTimeout(spawnPiece, timerRate);
+    tid = setTimeout(spawnPiece, timerRate);
 }
-setTimeout(spawnPiece, timerRate);
+var tid = setTimeout(spawnPiece, timerRate);
 
 let words = [
     {
@@ -59,8 +62,6 @@ class Player {
     }
 
 }
-
-player = new Player()
 
 class GamePiece {
     static moveSpeed = 1.5
@@ -112,15 +113,20 @@ class GamePiece {
     }
 }
 
+function addPiece() {
+    pieces.push(new GamePiece(words[Math.floor(Math.random()*words.length)]))
+}
+
+player = new Player()
+
+
+
 window.onload = function(){
     updateBounds();
     setupUI()
-    pieces.push(new GamePiece({"term":"Hi", "answer":"Heyo"}, 0, 0, 50, 50))
-
     setInterval(function() {
         draw();
     }, 10);
-
 }
 
 function updateBounds() {
@@ -153,10 +159,16 @@ pauseButton.addEventListener("click", function() {
     pauseButton.textContent = (paused) ? ("Play") : ("Pause")
     if(paused) {
         inputField.setAttribute("disabled", true)
+        remaining = timerRate - (new Date() - start)    
+        clearTimeout(tid)
     } else {
         inputField.removeAttribute("disabled")
         inputField.focus()
+        tid = setTimeout(spawnPiece, remaining)
     }
+    
+
+
     //need to handle callback (spawn tiles) stuff with pause
 })
 
